@@ -77,11 +77,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Smart School Library — Discover, Borrow, Learn" },
       { name: "description", content: "A modern school library platform: search the catalog, reserve books and track your reading journey." },
       { name: "author", content: "Smart School Library" },
-      { property: "og:title", content: "Smart School Library" },
-      { property: "og:description", content: "A modern school library platform with catalog, reservations and analytics." },
+      { property: "og:title", content: "Smart School Library — Discover, Borrow, Learn" },
+      { property: "og:description", content: "A modern school library platform: search the catalog, reserve books and track your reading journey." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Smart School Library — Discover, Borrow, Learn" },
+      { name: "twitter:description", content: "A modern school library platform: search the catalog, reserve books and track your reading journey." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/256dd8de-3f1a-4701-879f-7d24b8b59420/id-preview-daf13e7b--57e2ea52-18e3-4e2e-af91-c2a1fd70ac58.lovable.app-1778590134083.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/256dd8de-3f1a-4701-879f-7d24b8b59420/id-preview-daf13e7b--57e2ea52-18e3-4e2e-af91-c2a1fd70ac58.lovable.app-1778590134083.png" },
     ],
     links: [
       {
