@@ -9,6 +9,8 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { ThemeProvider } from "@/lib/theme";
+import { Layout } from "@/components/site/Layout";
 
 function NotFoundComponent() {
   return (
@@ -72,11 +74,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Smart School Library — Discover, Borrow, Learn" },
+      { name: "description", content: "A modern school library platform: search the catalog, reserve books and track your reading journey." },
+      { name: "author", content: "Smart School Library" },
+      { property: "og:title", content: "Smart School Library" },
+      { property: "og:description", content: "A modern school library platform with catalog, reservations and analytics." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
@@ -113,7 +115,11 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <ThemeProvider>
+        <Layout>
+          <Outlet />
+        </Layout>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
