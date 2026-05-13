@@ -40,18 +40,18 @@ function Home() {
           <div className="absolute inset-0 gradient-hero" />
         </div>
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 md:py-36">
-          <div className="max-w-3xl text-primary-foreground animate-fade-up">
+          <div className="max-w-3xl mx-auto text-center text-primary-foreground animate-fade-up">
             <Badge className="bg-white/15 text-white border-white/20 backdrop-blur mb-5 hover:bg-white/20">
               <Sparkles className="h-3 w-3 mr-1" /> Welcome to Smart School Library
             </Badge>
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
               Where curiosity finds its <span className="bg-gradient-to-r from-white to-orange-200 bg-clip-text text-transparent">next chapter</span>
             </h1>
-            <p className="mt-5 text-lg text-white/85 max-w-2xl">
+            <p className="mt-5 text-lg text-white/85 max-w-2xl mx-auto">
               Discover thousands of books across every subject. Reserve in one tap, borrow in seconds, and track your reading journey.
             </p>
 
-            <form className="mt-8 flex flex-col sm:flex-row gap-2 max-w-2xl rounded-2xl p-2 bg-white/10 backdrop-blur-md border border-white/20">
+            <form className="mt-8 flex flex-col sm:flex-row gap-2 max-w-2xl mx-auto rounded-2xl p-2 bg-white/10 backdrop-blur-md border border-white/20">
               <div className="relative flex-1">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-white/70" />
                 <Input placeholder="Search books, authors, ISBN…" className="pl-10 h-12 bg-transparent border-0 focus-visible:ring-0 text-white placeholder:text-white/60" />
