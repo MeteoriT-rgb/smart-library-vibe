@@ -1,5 +1,5 @@
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
-import { BookOpen, Moon, Sun, Bell, Menu, X, Search, LogOut, User as UserIcon } from "lucide-react";
+import { BookOpen, Moon, Sun, Bell, Menu, X, Search, LogOut, User as UserIcon, ShieldCheck, LogIn } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "@/lib/theme";
 import { useAuth } from "@/lib/auth";
@@ -111,6 +111,11 @@ export function Navbar() {
                     <span className="text-xs font-normal text-muted-foreground">{user.email}</span>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  {user.role === "admin" && (
+                    <DropdownMenuItem onSelect={() => navigate({ to: "/admin" })}>
+                      <ShieldCheck className="h-4 w-4 mr-2" /> Admin panel
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem onSelect={() => navigate({ to: "/profile" })}>
                     <UserIcon className="h-4 w-4 mr-2" /> My profile
                   </DropdownMenuItem>
@@ -120,9 +125,14 @@ export function Navbar() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button asChild size="sm" className="hidden sm:inline-flex gradient-primary shadow-glow ml-1">
-                <Link to="/signup">Sign up</Link>
-              </Button>
+              <div className="hidden sm:flex items-center gap-1 ml-1">
+                <Button asChild variant="ghost" size="sm">
+                  <Link to="/login"><LogIn className="h-4 w-4 mr-1" /> Sign in</Link>
+                </Button>
+                <Button asChild size="sm" className="gradient-primary shadow-glow">
+                  <Link to="/signup">Sign up</Link>
+                </Button>
+              </div>
             )}
 
             <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setOpen((v) => !v)} aria-label="Menu">
@@ -145,13 +155,23 @@ export function Navbar() {
                 </Link>
               ))}
               {!user && (
-                <Link to="/signup" onClick={() => setOpen(false)} className="px-3 py-2 rounded-lg text-sm font-medium text-primary hover:bg-muted">
-                  Sign up
-                </Link>
+                <>
+                  <Link to="/login" onClick={() => setOpen(false)} className="px-3 py-2 rounded-lg text-sm font-medium hover:bg-muted">
+                    Sign in
+                  </Link>
+                  <Link to="/signup" onClick={() => setOpen(false)} className="px-3 py-2 rounded-lg text-sm font-medium text-primary hover:bg-muted">
+                    Sign up
+                  </Link>
+                </>
               )}
               {user && (
                 <Link to="/profile" onClick={() => setOpen(false)} className="px-3 py-2 rounded-lg text-sm font-medium hover:bg-muted">
                   My profile
+                </Link>
+              )}
+              {user?.role === "admin" && (
+                <Link to="/admin" onClick={() => setOpen(false)} className="px-3 py-2 rounded-lg text-sm font-medium text-primary hover:bg-muted">
+                  Admin panel
                 </Link>
               )}
             </div>
