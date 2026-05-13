@@ -23,9 +23,8 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-3">Explore</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
+              <li><Link to="/" className="hover:text-primary transition-colors">Home</Link></li>
               <li><Link to="/catalog" className="hover:text-primary transition-colors">Catalog</Link></li>
-              <li><Link to="/reservations" className="hover:text-primary transition-colors">Reservations</Link></li>
-              <li><Link to="/dashboard" className="hover:text-primary transition-colors">Dashboard</Link></li>
               <li><Link to="/profile" className="hover:text-primary transition-colors">Profile</Link></li>
             </ul>
           </div>
@@ -34,7 +33,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><Link to="/about" className="hover:text-primary transition-colors">About</Link></li>
               <li><Link to="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
-              <li><Link to="/borrowers" className="hover:text-primary transition-colors">Borrowers</Link></li>
+              <li><Link to="/signup" className="hover:text-primary transition-colors">Sign up</Link></li>
             </ul>
           </div>
           <div>
