@@ -9,29 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ReservationsRouteImport } from './routes/reservations'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CatalogRouteImport } from './routes/catalog'
-import { Route as BorrowersRouteImport } from './routes/borrowers'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BookBookIdRouteImport } from './routes/book.$bookId'
 
-const ReservationsRoute = ReservationsRouteImport.update({
-  id: '/reservations',
-  path: '/reservations',
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -42,11 +35,6 @@ const ContactRoute = ContactRouteImport.update({
 const CatalogRoute = CatalogRouteImport.update({
   id: '/catalog',
   path: '/catalog',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BorrowersRoute = BorrowersRouteImport.update({
-  id: '/borrowers',
-  path: '/borrowers',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -68,35 +56,29 @@ const BookBookIdRoute = BookBookIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/borrowers': typeof BorrowersRoute
   '/catalog': typeof CatalogRoute
   '/contact': typeof ContactRoute
-  '/dashboard': typeof DashboardRoute
   '/profile': typeof ProfileRoute
-  '/reservations': typeof ReservationsRoute
+  '/signup': typeof SignupRoute
   '/book/$bookId': typeof BookBookIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/borrowers': typeof BorrowersRoute
   '/catalog': typeof CatalogRoute
   '/contact': typeof ContactRoute
-  '/dashboard': typeof DashboardRoute
   '/profile': typeof ProfileRoute
-  '/reservations': typeof ReservationsRoute
+  '/signup': typeof SignupRoute
   '/book/$bookId': typeof BookBookIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/borrowers': typeof BorrowersRoute
   '/catalog': typeof CatalogRoute
   '/contact': typeof ContactRoute
-  '/dashboard': typeof DashboardRoute
   '/profile': typeof ProfileRoute
-  '/reservations': typeof ReservationsRoute
+  '/signup': typeof SignupRoute
   '/book/$bookId': typeof BookBookIdRoute
 }
 export interface FileRouteTypes {
@@ -104,56 +86,48 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
-    | '/borrowers'
     | '/catalog'
     | '/contact'
-    | '/dashboard'
     | '/profile'
-    | '/reservations'
+    | '/signup'
     | '/book/$bookId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
-    | '/borrowers'
     | '/catalog'
     | '/contact'
-    | '/dashboard'
     | '/profile'
-    | '/reservations'
+    | '/signup'
     | '/book/$bookId'
   id:
     | '__root__'
     | '/'
     | '/about'
-    | '/borrowers'
     | '/catalog'
     | '/contact'
-    | '/dashboard'
     | '/profile'
-    | '/reservations'
+    | '/signup'
     | '/book/$bookId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  BorrowersRoute: typeof BorrowersRoute
   CatalogRoute: typeof CatalogRoute
   ContactRoute: typeof ContactRoute
-  DashboardRoute: typeof DashboardRoute
   ProfileRoute: typeof ProfileRoute
-  ReservationsRoute: typeof ReservationsRoute
+  SignupRoute: typeof SignupRoute
   BookBookIdRoute: typeof BookBookIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/reservations': {
-      id: '/reservations'
-      path: '/reservations'
-      fullPath: '/reservations'
-      preLoaderRoute: typeof ReservationsRouteImport
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -161,13 +135,6 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -182,13 +149,6 @@ declare module '@tanstack/react-router' {
       path: '/catalog'
       fullPath: '/catalog'
       preLoaderRoute: typeof CatalogRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/borrowers': {
-      id: '/borrowers'
-      path: '/borrowers'
-      fullPath: '/borrowers'
-      preLoaderRoute: typeof BorrowersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -218,24 +178,12 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  BorrowersRoute: BorrowersRoute,
   CatalogRoute: CatalogRoute,
   ContactRoute: ContactRoute,
-  DashboardRoute: DashboardRoute,
   ProfileRoute: ProfileRoute,
-  ReservationsRoute: ReservationsRoute,
+  SignupRoute: SignupRoute,
   BookBookIdRoute: BookBookIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

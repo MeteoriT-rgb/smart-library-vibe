@@ -1,7 +1,8 @@
-import { Link, useRouterState } from "@tanstack/react-router";
-import { BookOpen, Moon, Sun, Bell, Menu, X, Search } from "lucide-react";
+import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
+import { BookOpen, Moon, Sun, Bell, Menu, X, Search, LogOut, User as UserIcon } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "@/lib/theme";
+import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,23 +12,23 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 
 const links = [
   { to: "/", label: "Home" },
   { to: "/catalog", label: "Catalog" },
-  { to: "/reservations", label: "Reservations" },
-  { to: "/borrowers", label: "Borrowers" },
-  { to: "/dashboard", label: "Dashboard" },
-  { to: "/profile", label: "Profile" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
 ];
 
 export function Navbar() {
   const { theme, toggle } = useTheme();
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const path = useRouterState({ select: (s) => s.location.pathname });
+  const initials = user?.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase();
 
   return (
     <header className="sticky top-0 z-50 glass border-b border-border/60">
@@ -94,6 +95,36 @@ export function Navbar() {
             <Button variant="ghost" size="icon" onClick={toggle} aria-label="Toggle theme">
               {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
+
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="rounded-full" aria-label="Account">
+                    <Avatar className="h-8 w-8">
+                      <AvatarFallback className="text-xs gradient-primary text-primary-foreground">{initials}</AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel className="flex flex-col">
+                    <span>{user.name}</span>
+                    <span className="text-xs font-normal text-muted-foreground">{user.email}</span>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onSelect={() => navigate({ to: "/profile" })}>
+                    <UserIcon className="h-4 w-4 mr-2" /> My profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => { signOut(); navigate({ to: "/" }); }}>
+                    <LogOut className="h-4 w-4 mr-2" /> Sign out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button asChild size="sm" className="hidden sm:inline-flex gradient-primary shadow-glow ml-1">
+                <Link to="/signup">Sign up</Link>
+              </Button>
+            )}
+
             <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setOpen((v) => !v)} aria-label="Menu">
               {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
@@ -113,6 +144,16 @@ export function Navbar() {
                   {l.label}
                 </Link>
               ))}
+              {!user && (
+                <Link to="/signup" onClick={() => setOpen(false)} className="px-3 py-2 rounded-lg text-sm font-medium text-primary hover:bg-muted">
+                  Sign up
+                </Link>
+              )}
+              {user && (
+                <Link to="/profile" onClick={() => setOpen(false)} className="px-3 py-2 rounded-lg text-sm font-medium hover:bg-muted">
+                  My profile
+                </Link>
+              )}
             </div>
           </div>
         )}

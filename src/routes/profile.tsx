@@ -1,158 +1,102 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Switch } from "@/components/ui/switch";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { books } from "@/lib/mock-data";
-import { Trophy, BookOpen, Heart, Settings, Star, Mail, MapPin } from "lucide-react";
-import { BookCard } from "@/components/site/BookCard";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
+import { useAuth } from "@/lib/auth";
+import { BookOpen, Calendar, GraduationCap, Mail, LogOut, Award, Clock } from "lucide-react";
 
 export const Route = createFileRoute("/profile")({
   head: () => ({
     meta: [
-      { title: "Student Profile — Smart School Library" },
-      { name: "description", content: "Your reading history, achievements and library settings." },
+      { title: "My Profile — Smart School Library" },
+      { name: "description", content: "Your reader profile, reading stats and account details." },
     ],
   }),
   component: Profile,
 });
 
-const badges = [
-  { name: "Bookworm", desc: "Read 50 books", icon: BookOpen, color: "from-primary to-primary-glow" },
-  { name: "Speed Reader", desc: "5 books in a month", icon: Trophy, color: "from-accent to-warning" },
-  { name: "Critic", desc: "Wrote 20 reviews", icon: Star, color: "from-primary-glow to-accent" },
-  { name: "On Time", desc: "No overdue returns", icon: Heart, color: "from-success to-primary" },
-];
-
 function Profile() {
-  const borrowed = books.slice(0, 3);
-  const reserved = books.slice(3, 5);
-  const favorites = books.slice(5, 9);
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) navigate({ to: "/signup" });
+  }, [user, navigate]);
+
+  if (!user) return null;
+
+  const initials = user.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase();
+  const joined = new Date(user.joinedAt).toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+
+  const stats = [
+    { label: "Books read", value: 24, icon: BookOpen },
+    { label: "Currently borrowed", value: 2, icon: Clock },
+    { label: "Achievements", value: 5, icon: Award },
+  ];
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      <Card className="overflow-hidden">
-        <div className="h-32 gradient-hero" />
-        <CardContent className="p-6">
-          <div className="flex flex-col md:flex-row md:items-end gap-6 -mt-16">
-            <Avatar className="h-28 w-28 ring-4 ring-background shadow-elegant">
-              <AvatarImage src="https://i.pravatar.cc/300?img=33" />
-              <AvatarFallback>EM</AvatarFallback>
+    <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+      <Card className="overflow-hidden border-border/60 animate-fade-up">
+        <div className="h-32 gradient-primary" />
+        <CardContent className="p-6 sm:p-8 -mt-16">
+          <div className="flex flex-col sm:flex-row sm:items-end gap-4">
+            <Avatar className="h-24 w-24 ring-4 ring-background shadow-elegant">
+              <AvatarFallback className="text-2xl gradient-primary text-primary-foreground">{initials}</AvatarFallback>
             </Avatar>
-            <div className="flex-1">
-              <h1 className="text-2xl font-bold">Emma Mitchell</h1>
-              <p className="text-muted-foreground">Grade 11 · Member since 2023</p>
-              <div className="mt-2 flex flex-wrap gap-3 text-sm text-muted-foreground">
-                <span className="flex items-center gap-1"><Mail className="h-4 w-4" />emma.m@school.edu</span>
-                <span className="flex items-center gap-1"><MapPin className="h-4 w-4" />Building A · Locker 142</span>
+            <div className="flex-1 min-w-0 sm:pb-2">
+              <h1 className="text-2xl font-bold tracking-tight">{user.name}</h1>
+              <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+                <span className="inline-flex items-center gap-1.5"><Mail className="h-3.5 w-3.5" />{user.email}</span>
+                {user.grade && <span className="inline-flex items-center gap-1.5"><GraduationCap className="h-3.5 w-3.5" />{user.grade}</span>}
+                <span className="inline-flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" />Joined {joined}</span>
               </div>
             </div>
-            <Button>Edit profile</Button>
+            <Button variant="outline" onClick={() => { signOut(); navigate({ to: "/" }); }}>
+              <LogOut className="h-4 w-4 mr-2" /> Sign out
+            </Button>
+          </div>
+
+          <Separator className="my-6" />
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {stats.map((s) => (
+              <div key={s.label} className="rounded-xl border border-border/60 bg-card p-4 hover-lift">
+                <div className="flex items-center gap-3">
+                  <div className="grid h-10 w-10 place-items-center rounded-lg gradient-primary text-primary-foreground">
+                    <s.icon className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold">{s.value}</div>
+                    <div className="text-xs text-muted-foreground">{s.label}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {[
-          { label: "Books read", value: 48 },
-          { label: "Currently borrowed", value: 3 },
-          { label: "Pages this year", value: "12,480" },
-          { label: "Avg rating given", value: "4.6" },
-        ].map(s => (
-          <Card key={s.label} className="hover-lift">
-            <CardContent className="p-5">
-              <div className="text-2xl font-bold tracking-tight">{s.value}</div>
-              <div className="text-sm text-muted-foreground">{s.label}</div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <Card className="border-border/60">
+        <CardContent className="p-6 sm:p-8">
+          <h2 className="text-xl font-bold tracking-tight mb-4">Achievements</h2>
+          <div className="flex flex-wrap gap-2">
+            {["Early Reader", "Genre Explorer", "Streak: 7 days", "Reviewed 5 books", "On time returns"].map((a) => (
+              <Badge key={a} variant="secondary" className="px-3 py-1.5 text-sm">
+                <Award className="h-3.5 w-3.5 mr-1.5" />{a}
+              </Badge>
+            ))}
+          </div>
 
-      <section>
-        <h2 className="text-xl font-bold mb-4">Achievements</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {badges.map(b => (
-            <Card key={b.name} className="hover-lift text-center">
-              <CardContent className="p-5">
-                <div className={`mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br ${b.color} text-primary-foreground shadow-md`}>
-                  <b.icon className="h-6 w-6" />
-                </div>
-                <div className="mt-3 font-semibold">{b.name}</div>
-                <div className="text-xs text-muted-foreground">{b.desc}</div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
+          <Separator className="my-6" />
 
-      <Tabs defaultValue="borrowed">
-        <TabsList>
-          <TabsTrigger value="borrowed">Borrowed</TabsTrigger>
-          <TabsTrigger value="reserved">Reserved</TabsTrigger>
-          <TabsTrigger value="favorites">Favorites</TabsTrigger>
-          <TabsTrigger value="fines">Fine history</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
-        </TabsList>
-        <TabsContent value="borrowed" className="mt-6">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
-            {borrowed.map(b => <BookCard key={b.id} book={b} />)}
-          </div>
-        </TabsContent>
-        <TabsContent value="reserved" className="mt-6">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
-            {reserved.map(b => <BookCard key={b.id} book={b} />)}
-          </div>
-        </TabsContent>
-        <TabsContent value="favorites" className="mt-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-            {favorites.map(b => <BookCard key={b.id} book={b} />)}
-          </div>
-        </TabsContent>
-        <TabsContent value="fines" className="mt-6">
-          <Card>
-            <CardContent className="p-6 space-y-3">
-              {[
-                { d: "2026-03-12", a: "$2.50", r: "Returned 5 days late" },
-                { d: "2025-11-04", a: "$1.00", r: "Returned 2 days late" },
-              ].map((f, i) => (
-                <div key={i} className="flex justify-between items-center py-2 border-b last:border-0">
-                  <div><div className="font-medium">{f.r}</div><div className="text-xs text-muted-foreground">{f.d}</div></div>
-                  <Badge variant="destructive">{f.a}</Badge>
-                </div>
-              ))}
-              <p className="text-sm text-muted-foreground pt-2">All fines paid · No outstanding balance.</p>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        <TabsContent value="settings" className="mt-6">
-          <Card>
-            <CardContent className="p-6 space-y-6">
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div className="space-y-2"><Label>Display name</Label><Input defaultValue="Emma Mitchell" /></div>
-                <div className="space-y-2"><Label>Email</Label><Input defaultValue="emma.m@school.edu" /></div>
-              </div>
-              {[
-                { t: "Email reminders", d: "Get notified before books are due" },
-                { t: "Reservation alerts", d: "Notify me when reserved books are ready" },
-                { t: "Newsletter", d: "Monthly highlights from the library" },
-              ].map((s, i) => (
-                <div key={i} className="flex items-center justify-between">
-                  <div>
-                    <div className="font-medium flex items-center gap-2"><Settings className="h-4 w-4" />{s.t}</div>
-                    <div className="text-sm text-muted-foreground">{s.d}</div>
-                  </div>
-                  <Switch defaultChecked={i < 2} />
-                </div>
-              ))}
-              <Button>Save changes</Button>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+          <h2 className="text-xl font-bold tracking-tight mb-2">Continue exploring</h2>
+          <p className="text-sm text-muted-foreground mb-4">Browse the catalog and find your next great read.</p>
+          <Button asChild className="gradient-primary"><Link to="/catalog">Browse catalog</Link></Button>
+        </CardContent>
+      </Card>
     </div>
   );
 }

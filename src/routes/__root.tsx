@@ -10,6 +10,7 @@ import {
 
 import appCss from "../styles.css?url";
 import { ThemeProvider } from "@/lib/theme";
+import { AuthProvider } from "@/lib/auth";
 import { Layout } from "@/components/site/Layout";
 
 function NotFoundComponent() {
@@ -120,9 +121,11 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <Layout>
-          <Outlet />
-        </Layout>
+        <AuthProvider>
+          <Layout>
+            <Outlet />
+          </Layout>
+        </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

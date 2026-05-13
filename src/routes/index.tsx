@@ -51,10 +51,10 @@ function Home() {
               Discover thousands of books across every subject. Reserve in one tap, borrow in seconds, and track your reading journey.
             </p>
 
-            <form className="mt-8 flex flex-col sm:flex-row gap-2 max-w-2xl glass rounded-2xl p-2">
+            <form className="mt-8 flex flex-col sm:flex-row gap-2 max-w-2xl rounded-2xl p-2 bg-white/10 backdrop-blur-md border border-white/20">
               <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input placeholder="Search books, authors, ISBN…" className="pl-10 h-12 bg-transparent border-0 focus-visible:ring-0 text-foreground" />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-white/70" />
+                <Input placeholder="Search books, authors, ISBN…" className="pl-10 h-12 bg-transparent border-0 focus-visible:ring-0 text-white placeholder:text-white/60" />
               </div>
               <Button asChild size="lg" className="h-12 gradient-primary shadow-glow">
                 <Link to="/catalog">Search <ArrowRight className="ml-1 h-4 w-4" /></Link>
